@@ -1,5 +1,11 @@
 <h1>Upcoming Streams</h1>
 <a href="/dashboard">Go back to dashboard</a>
 {{#each streams}}
-  <h4>{{ this.snippet.title }}</h4>
+<h4>{{ this.snippet.title }}</h4>
 {{/each}}
+
+{{#if error}}
+<div class="alert alert-danger" role="alert">
+  There was an error: <i>{{error.errorMessage}}</i> {{#if error.helpLink}}<a href="{{error.helpLink}}" class="alert-link">more information</a>{{/if}}.
+</div>
+{{/if}}
