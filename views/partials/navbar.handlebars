@@ -1,33 +1,33 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">Livestreams</a>
+        <a class="navbar-brand" href="/">YLC</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <div class="collapse navbar-collapse justify-content-md-center" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link {{#if model.path.home}}active{{/if}}" aria-current="page" href="/">Home</a>
                 </li>
+                {{!-- {{#if }} --}}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link {{#if model.path.streams}}active{{/if}}" aria-current="page" href="/streams">Streams</a>
                 </li>
+                {{!-- {{/if}} --}}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
+                    <a class="nav-link {{#if model.path.about}}active{{/if}}" href="#">About</a>
                 </li>
             </ul>
+            <a class="btn btn-sm btn-outline-success" href="{{ model.url }}" role="button">Log in</a>
+            <a class="btn btn-sm btn-outline-danger" href="/logout" role="button">Log out</a>
         </div>
     </div>
 </nav>
+
+<script>
+
+  var model = {{{json model}}};
+  console.log('NavbarModel:', model);
+
+</script>
