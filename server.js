@@ -2,7 +2,7 @@ const express = require('express');
 const {
   google
 } = require('googleapis');
-
+const { config } = require('./config');
 const cookieParser = require('cookie-parser');
 const hbs = require('express-handlebars');
 const helpers = require('./helpers/helpers');
@@ -130,5 +130,5 @@ app.get('/logout', (req, res) => {
   return res.clearCookie('google_tokens').redirect('/');
 });
 
-app.listen(8080);
-console.log("Listening on port 8080");
+app.listen(config.port || 8080);
+console.log("Listening on port", config.port || 8080);

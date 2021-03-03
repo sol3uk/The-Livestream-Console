@@ -7,4 +7,5 @@ module.exports.config = {
     redirectUrl: process.env.GOOGLE_REDIRECT_URL,
   },
   cookieSecret: process.env.COOKIE_SECRET,
+  port: process.env.PORT,
 };
