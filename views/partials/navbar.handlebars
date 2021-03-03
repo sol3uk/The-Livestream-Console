@@ -7,27 +7,38 @@
         </button>
         <div class="collapse navbar-collapse justify-content-md-center" id="navbarNavDropdown">
             <ul class="navbar-nav">
+                {{#if model.loggedIn}}
+                <li class="nav-item">
+                    <a class="nav-link {{#if model.path.dashboard}}active{{/if}}" aria-current="page"
+                        href="/dashboard">Dashboard</a>
+                </li>
+                {{else}}
                 <li class="nav-item">
                     <a class="nav-link {{#if model.path.home}}active{{/if}}" aria-current="page" href="/">Home</a>
                 </li>
+                {{/if}}
                 {{!-- {{#if }} --}}
                 <li class="nav-item">
-                    <a class="nav-link {{#if model.path.streams}}active{{/if}}" aria-current="page" href="/streams">Streams</a>
+                    <a class="nav-link {{#if model.path.streams}}active{{/if}}" aria-current="page"
+                        href="/streams">Streams</a>
                 </li>
                 {{!-- {{/if}} --}}
                 <li class="nav-item">
-                    <a class="nav-link {{#if model.path.about}}active{{/if}}" href="#">About</a>
+                    <a class="nav-link {{#if model.path.about}}active{{/if}}" target="blank" href="https://sol3.me">About</a>
                 </li>
             </ul>
-            <a class="btn btn-sm btn-outline-success" href="{{ model.url }}" role="button">Log in</a>
+            {{#if model.loggedIn}}
             <a class="btn btn-sm btn-outline-danger" href="/logout" role="button">Log out</a>
+            {{else}}
+            <a class="btn btn-sm btn-outline-success" href="{{ model.url }}" role="button">Log in</a>
+            {{/if}}
         </div>
     </div>
 </nav>
 
 <script>
 
-  var model = {{{json model}}};
-  console.log('NavbarModel:', model);
+    var model = {{ json model }};
+    console.log('NavbarModel:', model);
 
 </script>

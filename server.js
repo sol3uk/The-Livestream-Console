@@ -46,7 +46,12 @@ app.get('/auth/redirect', async (req, res) => {
 
 app.get('/dashboard', authCheck, async (req, res) => {
   res.render('dashboard', {
-    path: {dashboard: 'dashboard'},
+    model: {
+      path: {
+        dashboard: 'dashboard'
+      },
+      loggedIn: true,
+    }
   });
 });
 
@@ -57,25 +62,48 @@ app.get('/streams', authCheck, async (req, res) => {
       broadcastStatus: 'upcoming'
     });
     console.log(livestreams.data.items);
+
+    let formattedStreams = livestreams.data.items.map(o => ({
+      id: o.id,
+      title: o.snippet.title,
+      description: o.snippet.description,
+      startTime: o.snippet.scheduledStartTime,
+      thumbnail: o.snippet.thumbnails.standard,
+      videoLink: 'https://www.youtube.com/watch?v=' + o.id,
+      //This link with "livestreaming" on the end redirects to the YT studio with broken homepage
+      studioLink: 'https://studio.youtube.com/video/'+ o.id /* +'/livestreaming' */,
+      enableAutoStart: o.contentDetails.enableAutoStart,
+    }))
+    /* console.log('formattedStreams:', formattedStreams); */
     res.render('streams', {
       model: {
-        streams: livestreams.data.items,
-        path: {streams: 'streams'},
+        streams: formattedStreams,
+        path: {
+          streams: 'streams'
+        },
+        loggedIn: true,
       }
     });
   } catch (e) {
     /* console.error('ERROR - /streams:', e); */
-    console.error('ERROR - /streams:', e.errors);
-    res.render('streams', {
-      model: {
-        error: {
-          errorMessage: e.errors[0].message,
-          helpLink: e.errors[0].extendedHelp,
-          code: e.code
-        },
-        path: {streams: 'streams'},
-      }
-    })
+    console.error('ERROR - /streams:', e);
+    if(e.errors){
+      res.render('streams', {
+        model: {
+          error: {
+            errorMessage: e.errors[0].message,
+            helpLink: e.errors[0].extendedHelp,
+            code: e.code
+          },
+          path: {
+            streams: 'streams'
+          },
+          loggedIn: true,
+        }
+      })
+    } else{
+      res.redirect('/');
+    }
   }
 });
 
@@ -90,7 +118,10 @@ app.get('/', (req, res) => {
   return res.render('home', {
     model: {
       url,
-      path: {home: 'home'},
+      path: {
+        home: 'home'
+      },
+      loggedIn: false,
     }
   });
 });
