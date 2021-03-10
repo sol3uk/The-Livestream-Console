@@ -1,42 +1,81 @@
-<div class="py-5 bg-light">
+<div class="py-5">
   <div class="container">
-    <h1>Upcoming Streams</h1>
-    {{#each model.streams}}
-    <h4>{{ this.snippet.title }}</h4>
-    {{/each}}
-
-    {{#if model.error}}
-    <div class="alert alert-danger" role="alert">
-      There was an error: <i>{{model.error.errorMessage}}</i> {{#if model.error.helpLink}}<a
-        href="{{model.error.helpLink}}" class="alert-link">more information</a>{{/if}}.
-    </div>
-    {{/if}}
-
-
-    {{!-- stream boxes --}}
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      {{#each model.streams}}
-      <div class="col">
-        <div class="card shadow-sm">
-          <img src="{{this.thumbnail.url}}" alt="" srcset="">
-
-          <div class="card-body">
-            <h5 class="card-title">{{this.title}}</h5>
-            <b class="card-text">Autostart?:{{this.enableAutoStart}}</b>
-            <p class="card-text">{{this.description}}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a class="btn btn-sm btn-outline-secondary" href="{{ this.videoLink }}" role="button">View</a>
-                <a class="btn btn-sm btn-outline-secondary" href="{{ this.studioLink }}" role="button">Edit</a>
-                {{!-- <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> --}}
+    {{#if model.streams.active}}
+      <div class="row">
+        <h1 class="mb-4">Active Stream <span class="badge bg-danger">Live</span></h1>
+        <div class="row g-3 mb-4">
+          {{!-- active livestream --}}
+          {{#each model.streams.active}}
+            <div class="col">
+              <div class="card border-danger border-3 p-3">
+                <div class="row g-0">
+                  <div class="col-md-6">
+                    {{!-- <img src="{{this.thumbnail.url}}" class="img-fluid rounded" alt="video thumbnail"> --}}
+                    {{!-- <iframe class="img-fluid rounded" src="https://www.youtube.com/embed/{{this.id}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> --}}
+                    {{!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> --}}
+                    <div class="iframe-container"><iframe class="rounded" loading="lazy" src="https://www.youtube.com/embed/{{this.id}}"></iframe></div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card-body">
+                      <h2 class="card-title">{{this.title}}</h2>
+                      <p class="card-text">{{this.description}}</p>
+                      <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <a class="btn btn-sm btn-outline-secondary" href="{{ this.videoLink }}" role="button">View</a>
+                      <a class="btn btn-sm btn-outline-secondary" href="{{ this.studioLink }}" role="button">Edit</a>
+                    </div>
+                  </div>
+                      <p class="card-text"><small class="text-muted">Live since {{toLocalDatetime this.startTime}}</small></p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <small class="text-muted">{{toLocalDatetime this.startTime}}</small>
             </div>
-          </div>
+          {{/each}}
         </div>
       </div>
-      {{/each}}
+    {{/if}}
+    <div class="row">
+      <h1 class="mb-4">Upcoming Streams</h1>
+        {{#if model.error}}
+          <div class="alert alert-danger" role="alert">
+            There was an error: <i>{{model.error.errorMessage}}</i> {{#if model.error.helpLink}}<a
+                href="{{model.error.helpLink}}" class="alert-link">more information</a>{{/if}}.
+          </div>
+        {{/if}}
+        {{!-- stream boxes --}}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+          {{#each model.streams.upcoming}}
+            <div class="col">
+              <div class="card shadow-sm">
+                <input type="hidden" id="{{this.id}}" name="streamId" value="{{this.id}}">
+                <img src="{{this.thumbnail.url}}" class="img-fluid card-img-top" alt="video thumbnail">
+                <div class="card-body">
+                  <h5 class="card-title">{{this.title}}</h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckCheckedDisabled"
+                          {{#if this.enableAutoStart}}checked{{/if}} disabled>
+                        <label class="form-check-label" for="flexSwitchCheckCheckedDisabled">auto-start</label>
+                      </div>
+                    </li>
+                  </ul>
+                  <p class="card-text">{{this.description}}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <a class="btn btn-sm btn-outline-secondary" href="{{ this.videoLink }}" role="button">View</a>
+                      <a class="btn btn-sm btn-outline-secondary" href="{{ this.studioLink }}" role="button">Edit</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer text-muted">
+                  {{toLocalDatetime this.startTime}}
+                </div>
+              </div>
+            </div>
+          {{/each}}
+        </div>
     </div>
   </div>
 </div>

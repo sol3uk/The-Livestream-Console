@@ -1,3 +1,4 @@
+const { streamStatus } = require("../models/constants");
 const { google } = require("googleapis");
 const { googleAuth } = require("../googleAuth");
 const youtube = google.youtube({
@@ -17,10 +18,10 @@ module.exports = {
     });
   },
 
-  async getFormattedStreams() {
+  async getStreams(status = streamStatus.UPCOMING) {
     const livestreams = await youtube.liveBroadcasts.list({
       part: "snippet,contentDetails",
-      broadcastStatus: "upcoming",
+      broadcastStatus: status,
     });
     console.log(livestreams.data.items);
 

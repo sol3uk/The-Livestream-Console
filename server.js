@@ -5,6 +5,7 @@ const hbs = require("express-handlebars");
 const helpers = require("./helpers/helpers");
 const { authCheck } = require("./middleware/authCheck");
 const youtube = require("./controllers/youtubeController");
+const { streamStatus } = require("./models/constants");
 
 const app = express();
 app.use(express.static("public"));
@@ -26,7 +27,8 @@ app.set("view engine", "handlebars");
 app.get("/auth/redirect", async (req, res) => {
   if (!req.query.code) return res.status(400);
   const { tokens } = await youtube.getGoogleAuthToken(req.query.code);
-  res.cookie("google_tokens", tokens, {
+  res
+    .cookie("google_tokens", tokens, {
       maxAge: 1000 * 60 * 60,
       httpOnly: true,
     })
@@ -46,11 +48,15 @@ app.get("/dashboard", authCheck, async (req, res) => {
 
 app.get("/streams", authCheck, async (req, res) => {
   try {
-    let formattedStreams = await youtube.getFormattedStreams();
+    let upcomingStreams = await youtube.getStreams(streamStatus.UPCOMING);
+    let activeStream = await youtube.getStreams(streamStatus.ACTIVE);
     /* console.log('formattedStreams:', formattedStreams); */
     res.render("streams", {
       model: {
-        streams: formattedStreams,
+        streams: {
+          active: activeStream,
+          upcoming: upcomingStreams,
+        },
         path: {
           streams: "streams",
         },
