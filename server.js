@@ -92,7 +92,9 @@ app.post("/streams/stop/:id", authCheck, async (req, res) => {
     let stoppedStream = await youtube.stopStream(req.params.id);
 
     /* console.log('formattedStreams:', formattedStreams); */
-    res.status(200).json(stoppedStream);
+    res.status(200).json({
+      redirectUrl: "/streams",
+    });
   } catch (e) {
     console.error("ERROR STOPPING:", e);
     res.status(500).json(err);
