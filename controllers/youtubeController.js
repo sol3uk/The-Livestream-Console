@@ -23,7 +23,7 @@ module.exports = {
       part: "snippet,contentDetails",
       broadcastStatus: status,
     });
-    console.log(livestreams.data.items);
+    /* console.log(livestreams.data.items); */
 
     let formattedStreams = livestreams.data.items.map((o) => ({
       id: o.id,
@@ -38,5 +38,15 @@ module.exports = {
       enableAutoStart: o.contentDetails.enableAutoStart,
     }));
     return formattedStreams;
+  },
+
+  async stopStream(id) {
+    let response = await youtube.liveBroadcasts.transition({
+      broadcastStatus: "complete",
+      id: id,
+      part: "snippet, status",
+    });
+    console.log("STOPPED STREAM ----------------- :", response);
+    return response;
   },
 };
