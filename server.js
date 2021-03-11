@@ -49,13 +49,15 @@ app.get("/dashboard", authCheck, async (req, res) => {
 app.get("/streams", authCheck, async (req, res) => {
   try {
     let upcomingStreams = await youtube.getStreams(streamStatus.UPCOMING);
-    let activeStream = await youtube.getStreams(streamStatus.ACTIVE);
+    let activeStream = await youtube.getStreams(streamStatus.ACTIVE, 1);
+    let lastStream = await youtube.getStreams(streamStatus.COMPLETED, 1);
     /* console.log('formattedStreams:', formattedStreams); */
     res.render("streams", {
       model: {
         streams: {
           active: activeStream,
           upcoming: upcomingStreams,
+          last: lastStream,
         },
         path: {
           streams: "streams",

@@ -18,10 +18,11 @@ module.exports = {
     });
   },
 
-  async getStreams(status = streamStatus.UPCOMING) {
+  async getStreams(status = streamStatus.UPCOMING, limit = 10) {
     const livestreams = await youtube.liveBroadcasts.list({
       part: "snippet,contentDetails",
       broadcastStatus: status,
+      maxResults: limit,
     });
     /* console.log(livestreams.data.items); */
 
