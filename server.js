@@ -22,7 +22,7 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
-app.use("/api", apiRoutes);
+app.use("/", apiRoutes);
 app.use("/", pageRoutes);
 
 app.listen(config.port || 8080);
