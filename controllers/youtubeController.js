@@ -24,7 +24,7 @@ module.exports = {
       broadcastStatus: status,
       maxResults: limit,
     });
-    /* console.log(livestreams.data.items); */
+    /* console.log(livestreams.data.items[0]); */
 
     let formattedStreams = livestreams.data.items.map((o) => ({
       id: o.id,
@@ -37,6 +37,7 @@ module.exports = {
       studioLink:
         "https://studio.youtube.com/video/" + o.id /* +'/livestreaming' */,
       enableAutoStart: o.contentDetails.enableAutoStart,
+      enableAutoStop: o.contentDetails.enableAutoStop,
     }));
     return formattedStreams;
   },

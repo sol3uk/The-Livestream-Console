@@ -6,11 +6,14 @@
     <h5 class="card-title">{{this.title}}</h5>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
-        <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="flexSwitchCheckCheckedDisabled"
-            {{#if this.enableAutoStart}}checked{{/if}} disabled>
-            <label class="form-check-label" for="flexSwitchCheckCheckedDisabled">auto-start</label>
-        </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="autoStart" {{#if this.enableAutoStart}}checked{{/if}} disabled>
+                <label class="form-check-label" for="autoStart">auto-start</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="autoStop" {{#if this.enableAutoStop}}checked{{/if}} disabled>
+                <label class="form-check-label" for="autoStop">auto-stop</label>
+            </div>
         </li>
     </ul>
     <p class="card-text">{{this.description}}</p>
