@@ -11,7 +11,7 @@ router.get("/auth/redirect", async (req, res) => {
   const { tokens } = await youtube.getGoogleAuthToken(req.query.code);
   res
     .cookie("google_tokens", tokens, {
-      maxAge: 1000 * 60 * 60,
+      maxAge: 1000 * 60 * 60 * 24, //1 day token
       httpOnly: true,
     })
     .redirect("/dashboard");
