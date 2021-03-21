@@ -51,7 +51,9 @@ function request(url, options) {
 function startSpinner(element, disable = false) {
   let spinnerEle = `<span class="isLoading spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
-  if (element?.classList?.contains("btn")) {
+  //Want to, but can't use optional chaining as it's not fully cross browser capable yet
+  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
+  if (element && element.classList.contains("btn")) {
     //do button spinner
     element.disabled = disable;
     element.innerHTML = spinnerEle + element.innerHTML;
