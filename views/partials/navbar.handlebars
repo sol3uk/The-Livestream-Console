@@ -17,14 +17,14 @@
                     <a class="nav-link {{#if model.path.home}}active{{/if}}" aria-current="page" href="/">Home</a>
                 </li>
                 {{/if}}
-                {{!-- {{#if }} --}}
+                {{#if model.loggedIn}}
                 <li class="nav-item">
                     <a class="nav-link {{#if model.path.streams}}active{{/if}}" aria-current="page"
                         href="/streams">Streams</a>
                 </li>
-                {{!-- {{/if}} --}}
+                {{/if}}
                 <li class="nav-item">
-                    <a class="nav-link {{#if model.path.about}}active{{/if}}" target="blank" href="https://sol3.me">About</a>
+                    <a class="nav-link {{#if model.path.about}}active{{/if}}" href="/about">About</a>
                 </li>
             </ul>
             {{#if model.loggedIn}}

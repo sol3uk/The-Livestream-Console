@@ -1,6 +1,6 @@
 const path = require("path");
 const router = require("express").Router();
-const { authCheck } = require("../middleware/authCheck");
+const { authCheck, isLoggedIn } = require("../middleware/authCheck");
 const youtube = require("../controllers/youtubeController");
 const { streamStatus } = require("../models/constants");
 
@@ -24,7 +24,7 @@ router.get("/dashboard", authCheck, async (req, res) => {
       path: {
         dashboard: "dashboard",
       },
-      loggedIn: true,
+      loggedIn: isLoggedIn(req),
     },
   });
 });
@@ -45,7 +45,7 @@ router.get("/streams", authCheck, async (req, res) => {
         path: {
           streams: "streams",
         },
-        loggedIn: true,
+        loggedIn: isLoggedIn(req),
       },
     });
   } catch (e) {
@@ -61,13 +61,24 @@ router.get("/streams", authCheck, async (req, res) => {
           path: {
             streams: "streams",
           },
-          loggedIn: true,
+          loggedIn: isLoggedIn(req),
         },
       });
     } else {
       res.redirect("/");
     }
   }
+});
+
+router.get("/about", async (req, res) => {
+  res.render("about", {
+    model: {
+      path: {
+        about: "about",
+      },
+      loggedIn: isLoggedIn(req),
+    },
+  });
 });
 
 // Generic Routes -------------
@@ -82,7 +93,7 @@ router.get("/", (req, res) => {
       path: {
         home: "home",
       },
-      loggedIn: false,
+      loggedIn: isLoggedIn(req),
     },
   });
 });
