@@ -48,7 +48,11 @@ module.exports = {
       id: id,
       part: "snippet, status",
     });
-    console.log("STOPPED STREAM ----------------- :", response.data);
+    console.log(
+      "STOPPED STREAM ----------------- :",
+      response.data.id,
+      response.data.snippet?.title
+    );
     return response;
   },
 };
