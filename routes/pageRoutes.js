@@ -81,6 +81,27 @@ router.get("/about", async (req, res) => {
   });
 });
 
+router.get("/TOS", async (req, res) => {
+  res.render("TOS", {
+    model: {
+      path: {
+        TOS: "TOS",
+      },
+      loggedIn: isLoggedIn(req),
+    },
+  });
+});
+
+router.get("/privacy", async (req, res) => {
+  res.render("privacy", {
+    model: {
+      path: {
+        privacy: "privacy",
+      },
+      loggedIn: isLoggedIn(req),
+    },
+  });
+});
 // Generic Routes -------------
 router.get("/", (req, res) => {
   if (req.cookies.google_tokens) {
