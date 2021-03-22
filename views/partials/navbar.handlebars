@@ -6,7 +6,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-md-center" id="navbarNavDropdown">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto">
                 {{#if model.loggedIn}}
                 <li class="nav-item">
                     <a class="nav-link {{#if model.path.dashboard}}active{{/if}}" aria-current="page"
@@ -17,16 +17,17 @@
                     <a class="nav-link {{#if model.path.home}}active{{/if}}" aria-current="page" href="/">Home</a>
                 </li>
                 {{/if}}
-                {{!-- {{#if }} --}}
+                {{#if model.loggedIn}}
                 <li class="nav-item">
                     <a class="nav-link {{#if model.path.streams}}active{{/if}}" aria-current="page"
                         href="/streams">Streams</a>
                 </li>
-                {{!-- {{/if}} --}}
+                {{/if}}
                 <li class="nav-item">
-                    <a class="nav-link {{#if model.path.about}}active{{/if}}" target="blank" href="https://sol3.me">About</a>
+                    <a class="nav-link {{#if model.path.about}}active{{/if}}" href="/about">About</a>
                 </li>
             </ul>
+            <span class="navbar-text mx-2">v1.1</span>
             {{#if model.loggedIn}}
             <a class="btn btn-sm btn-outline-danger" href="/logout" role="button">Log out</a>
             {{else}}

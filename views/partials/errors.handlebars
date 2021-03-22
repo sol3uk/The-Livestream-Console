@@ -1,0 +1,8 @@
+<div id="errorContainer">
+    {{#if model.error}}
+        <div class="alert alert-danger" role="alert">
+        There was an error: <i>{{model.error.errorMessage}}</i> {{#if model.error.helpLink}}<a
+            href="{{model.error.helpLink}}" class="alert-link">more information</a>{{/if}}.
+        </div>
+    {{/if}}
+</div>

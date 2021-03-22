@@ -1,3 +1,4 @@
+const { streamStatus } = require("../models/constants");
 const { google } = require("googleapis");
 const { googleAuth } = require("../googleAuth");
 const youtube = google.youtube({
@@ -17,12 +18,13 @@ module.exports = {
     });
   },
 
-  async getFormattedStreams() {
+  async getStreams(status = streamStatus.UPCOMING, limit = 10) {
     const livestreams = await youtube.liveBroadcasts.list({
       part: "snippet,contentDetails",
-      broadcastStatus: "upcoming",
+      broadcastStatus: status,
+      maxResults: limit,
     });
-    console.log(livestreams.data.items);
+    /* console.log(livestreams.data.items[0]); */
 
     let formattedStreams = livestreams.data.items.map((o) => ({
       id: o.id,
@@ -35,7 +37,22 @@ module.exports = {
       studioLink:
         "https://studio.youtube.com/video/" + o.id /* +'/livestreaming' */,
       enableAutoStart: o.contentDetails.enableAutoStart,
+      enableAutoStop: o.contentDetails.enableAutoStop,
     }));
     return formattedStreams;
+  },
+
+  async stopStream(id) {
+    let response = await youtube.liveBroadcasts.transition({
+      broadcastStatus: "complete",
+      id: id,
+      part: "snippet, status",
+    });
+    console.log(
+      "STOPPED STREAM ----------------- :",
+      response.data.id,
+      response.data.snippet?.title
+    );
+    return response;
   },
 };
