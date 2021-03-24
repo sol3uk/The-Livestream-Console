@@ -18,6 +18,20 @@ router.get("/auth/redirect", async (req, res) => {
 });
 
 // Main Pages -------------
+router.get("/login", isLoggedIn, async (req, res) => {
+  if (req.cookies.google_tokens) return res.redirect("/dashboard");
+  const googleLoginURL = youtube.genConsentUrl();
+  res.render("login", {
+    model: {
+      googleLoginURL,
+      path: {
+        login: "login",
+      },
+      loggedIn: req.isLoggedIn,
+    },
+  });
+});
+
 router.get("/dashboard", authCheck, isLoggedIn, async (req, res) => {
   res.render("dashboard", {
     model: {
@@ -104,13 +118,10 @@ router.get("/privacy", isLoggedIn, async (req, res) => {
 });
 // Generic Routes -------------
 router.get("/", isLoggedIn, (req, res) => {
-  if (req.cookies.google_tokens) {
-    return res.redirect("/dashboard");
-  }
-  const url = youtube.genConsentUrl();
+  if (req.cookies.google_tokens) return res.redirect("/dashboard");
+
   return res.render("home", {
     model: {
-      url,
       path: {
         home: "home",
       },
