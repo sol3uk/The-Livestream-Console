@@ -7,6 +7,7 @@
         </button>
         <div class="collapse navbar-collapse justify-content-md-center" id="navbarNavDropdown">
             <ul class="navbar-nav me-auto">
+                
                 {{#if model.loggedIn}}
                 <li class="nav-item">
                     <a class="nav-link {{#if model.path.dashboard}}active{{/if}}" aria-current="page"
@@ -28,18 +29,20 @@
                 </li>
             </ul>
             <span class="navbar-text mx-2">v1.1</span>
-            {{#if model.loggedIn}}
-            <a class="btn btn-sm btn-outline-danger" href="/logout" role="button">Log out</a>
-            {{else}}
-            <a class="btn btn-sm btn-outline-success" href="{{ model.url }}" role="button">Log in</a>
-            {{/if}}
+            {{#unless model.path.home}}
+                {{#if model.loggedIn}}
+                <a class="btn btn-sm btn-outline-danger" href="/logout" role="button">Log out</a>
+                {{else}}
+                <a class="btn btn-sm btn-outline-success" href="{{ model.url }}" role="button">Log in</a>
+                {{/if}}
+            {{/unless}}
         </div>
     </div>
 </nav>
-
+{{!-- 
 <script>
 
     var model = {{ json model }};
     console.log('NavbarModel:', model);
 
-</script>
+</script> --}}
