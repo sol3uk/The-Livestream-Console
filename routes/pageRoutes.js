@@ -18,18 +18,18 @@ router.get("/auth/redirect", async (req, res) => {
 });
 
 // Main Pages -------------
-router.get("/dashboard", authCheck, async (req, res) => {
+router.get("/dashboard", authCheck, isLoggedIn, async (req, res) => {
   res.render("dashboard", {
     model: {
       path: {
         dashboard: "dashboard",
       },
-      loggedIn: isLoggedIn(req),
+      loggedIn: req.isLoggedIn,
     },
   });
 });
 
-router.get("/streams", authCheck, async (req, res) => {
+router.get("/streams", authCheck, isLoggedIn, async (req, res) => {
   try {
     let upcomingStreams = await youtube.getStreams(streamStatus.UPCOMING);
     let activeStream = await youtube.getStreams(streamStatus.ACTIVE, 1);
@@ -45,7 +45,7 @@ router.get("/streams", authCheck, async (req, res) => {
         path: {
           streams: "streams",
         },
-        loggedIn: isLoggedIn(req),
+        loggedIn: req.isLoggedIn,
       },
     });
   } catch (e) {
@@ -61,7 +61,7 @@ router.get("/streams", authCheck, async (req, res) => {
           path: {
             streams: "streams",
           },
-          loggedIn: isLoggedIn(req),
+          loggedIn: req.isLoggedIn,
         },
       });
     } else {
@@ -70,40 +70,40 @@ router.get("/streams", authCheck, async (req, res) => {
   }
 });
 
-router.get("/about", async (req, res) => {
+router.get("/about", isLoggedIn, async (req, res) => {
   res.render("about", {
     model: {
       path: {
         about: "about",
       },
-      loggedIn: isLoggedIn(req),
+      loggedIn: req.isLoggedIn,
     },
   });
 });
 
-router.get("/TOS", async (req, res) => {
+router.get("/TOS", isLoggedIn, async (req, res) => {
   res.render("TOS", {
     model: {
       path: {
         TOS: "TOS",
       },
-      loggedIn: isLoggedIn(req),
+      loggedIn: req.isLoggedIn,
     },
   });
 });
 
-router.get("/privacy", async (req, res) => {
+router.get("/privacy", isLoggedIn, async (req, res) => {
   res.render("privacy", {
     model: {
       path: {
         privacy: "privacy",
       },
-      loggedIn: isLoggedIn(req),
+      loggedIn: req.isLoggedIn,
     },
   });
 });
 // Generic Routes -------------
-router.get("/", (req, res) => {
+router.get("/", isLoggedIn, (req, res) => {
   if (req.cookies.google_tokens) {
     return res.redirect("/dashboard");
   }
@@ -114,7 +114,7 @@ router.get("/", (req, res) => {
       path: {
         home: "home",
       },
-      loggedIn: isLoggedIn(req),
+      loggedIn: req.isLoggedIn,
     },
   });
 });
