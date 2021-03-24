@@ -76,7 +76,7 @@ router.get("/about", isLoggedIn, async (req, res) => {
       path: {
         about: "about",
       },
-      loggedIn: isLoggedIn,
+      loggedIn: req.isLoggedIn,
     },
   });
 });
