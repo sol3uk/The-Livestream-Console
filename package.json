@@ -4,7 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sass-compile": "node-sass scss/main.scss public/css/main.css --output-style compressed",
+    "sass-watch": "node-sass -w scss/main.scss public/css/main.css",
+    "start": "npm run sass-compile && node server.js",
+    "dev": "npm run sass-watch && node server.js"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +21,7 @@
     "googleapis": "^67.1.0"
   },
   "devDependencies": {
+    "node-sass": "^5.0.0",
     "nodemon": "^2.0.7"
   }
 }
