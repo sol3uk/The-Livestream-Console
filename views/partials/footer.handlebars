@@ -1,4 +1,8 @@
 <footer class="mt-auto py-3 text-muted">
-  <p class="container"><small>This is an open source web app, we are not affiliated with Google in any way. Find out more <a href="/about" target="_blank" rel="noopener noreferrer">here</a>.</small></p>
+  {{#unless model.path.about}}
+    <p class="container"><small>This is an open source web app, we are not affiliated with Google in any way. Find out more <a href="/about" target="_blank" rel="noopener noreferrer">here</a>.</small></p>
+  {{/unless}}
   <p>Built by <a href="https://github.com/sol3uk" target="_blank">@sol3uk</a>.</p>
+  <a href="/TOS" target="_blank">Terms of Service</a> - 
+  <a href="/privacy" target="_blank">Privacy Policy</a>
 </footer>
