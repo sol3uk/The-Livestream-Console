@@ -1,4 +1,4 @@
-# Youtube-Livestream-Console
+# YouTube-Livestream-Console
 
 A web app to help manage your youtube live streams.
 

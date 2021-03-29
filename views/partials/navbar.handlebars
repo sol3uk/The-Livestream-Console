@@ -32,17 +32,17 @@
             {{#unless model.path.home}}
                 {{#if model.loggedIn}}
                 <a class="btn btn-sm btn-outline-danger" href="/logout" role="button">Log out</a>
+                {{else if model.googleLoginURL}}
+                <a class="btn btn-sm btn-outline-success" href="{{ model.googleLoginURL }}" role="button">Log in</a>
                 {{else}}
-                <a class="btn btn-sm btn-outline-success" href="{{ model.url }}" role="button">Log in</a>
+                <a class="btn btn-sm btn-outline-success" href="/login" role="button">Log in</a>
                 {{/if}}
             {{/unless}}
         </div>
     </div>
 </nav>
-{{!-- 
-<script>
 
+{{!-- <script>
     var model = {{ json model }};
     console.log('NavbarModel:', model);
-
 </script> --}}
