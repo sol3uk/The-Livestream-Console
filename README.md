@@ -1,6 +1,6 @@
 # The-Livestream-Console
 
-A web app to help manage your youtube live streams.
+A web app to help manage your YouTube live streams.
 
 ## Installation
 
@@ -17,9 +17,9 @@ You're good to go!
 
 ## Usage
 
-Live Branch: https://youtube-livestream-console.herokuapp.com/
+Live Branch: https://the-livestream-console.herokuapp.com/
 
-Development Branch: https://youtube-livestream-console-dev.herokuapp.com/
+Development Branch: https://the-livestream-console-dev.herokuapp.com/
 
 ## Contributing & Plans
 
@@ -33,4 +33,4 @@ https://github.com/users/sol3uk/projects/4
 
 Please credit me if you plan to use this for your own projects etc.
 
-[GNU General Public License v3.0](https://github.com/sol3uk/Youtube-Livestream-Console/blob/master/LICENSE)
+[GNU General Public License v3.0](https://github.com/sol3uk/The-Livestream-Console/blob/master/LICENSE)
