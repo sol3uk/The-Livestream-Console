@@ -26,19 +26,17 @@ module.exports = {
     });
     /* console.log(livestreams.data.items[0]); */
 
-    let formattedStreams = livestreams.data.items.map((o) => ({
-      id: o.id,
-      title: o.snippet.title,
-      description: o.snippet.description,
-      startTime: o.snippet.scheduledStartTime,
-      thumbnail: o.snippet.thumbnails.standard,
-      videoLink: "https://www.youtube.com/watch?v=" + o.id,
-      //This link with "livestreaming" on the end redirects to the YT studio with broken homepage
-      studioLink:
-        "https://studio.youtube.com/video/" + o.id /* +'/livestreaming' */,
-      enableAutoStart: o.contentDetails.enableAutoStart,
-      enableAutoStop: o.contentDetails.enableAutoStop,
-    }));
+    let formattedStreams = formatStreams(livestreams);
+    return formattedStreams;
+  },
+
+  async getStreamById(streamId) {
+    const livestreams = await youtube.liveBroadcasts.list({
+      id: streamId,
+      part: "snippet,contentDetails",
+    });
+
+    let formattedStreams = formatStreams(livestreams);
     return formattedStreams;
   },
 
@@ -56,3 +54,20 @@ module.exports = {
     return response;
   },
 };
+
+//Private methods -----
+function formatStreams(livestreams) {
+  return livestreams.data.items.map((o) => ({
+    id: o.id,
+    title: o.snippet.title,
+    description: o.snippet.description,
+    startTime: o.snippet.scheduledStartTime,
+    thumbnail: o.snippet.thumbnails.standard,
+    videoLink: "https://www.youtube.com/watch?v=" + o.id,
+    //This link with "livestreaming" on the end redirects to the YT studio with broken homepage
+    studioLink:
+      "https://studio.youtube.com/video/" + o.id /* +'/livestreaming' */,
+    enableAutoStart: o.contentDetails.enableAutoStart,
+    enableAutoStop: o.contentDetails.enableAutoStop,
+  }));
+}
