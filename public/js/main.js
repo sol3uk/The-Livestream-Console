@@ -8,13 +8,18 @@
  */
 function parseJSON(response) {
   return new Promise((resolve) =>
-    response.json().then((json) =>
-      resolve({
-        status: response.status,
-        ok: response.ok,
-        json,
+    response
+      .json()
+      .then((json) =>
+        resolve({
+          status: response.status,
+          ok: response.ok,
+          json,
+        })
+      )
+      .catch((error) => {
+        console.log(error);
       })
-    )
   );
 }
 
@@ -44,6 +49,31 @@ function request(url, options) {
       );
   });
 }
+/**
+ * Requests a partial from a URL, returning a promise
+ *
+ * @param  {string} url       The URL we want to request
+ * @param  {object} [options] The options we want to pass to "fetch"
+ *
+ * @return {Promise}           The request promise
+ */
+function partialRequest(url, options) {
+  return new Promise((resolve, reject) => {
+    fetch(url, options)
+      .then((response) => {
+        if (response.ok) {
+          return resolve(response.text()); //parse raw text for HTML partials
+        }
+        // extract the error from the server's json
+        return reject(response.json);
+      })
+      .catch((error) =>
+        reject({
+          networkError: error,
+        })
+      );
+  });
+}
 
 // ----------------------
 
@@ -62,10 +92,14 @@ function startSpinner(element, disable = false) {
   }
 }
 
-function removeSpinners() {
+function removeSpinners(element) {
   let elements = document.getElementsByClassName("isLoading");
   while (elements.length > 0) {
     elements[0].parentNode.removeChild(elements[0]);
+  }
+  if (element && element.classList.contains("btn")) {
+    //re-enable button that was disabled
+    element.disabled = false;
   }
 }
 
@@ -98,15 +132,14 @@ function stopStream(id, element) {
 
   startSpinner(element, true);
 
-  let url = `/streams/stop/${id}`;
+  let url = `/api/streams/stop/${id}`;
   const response = request(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    method: "POST",
+    cache: "no-cache",
     headers: {
       "Content-Type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    referrerPolicy: "no-referrer",
   })
     .then(function (data) {
       window.location.href = data.redirectUrl; //redirect after successful stop
@@ -114,6 +147,34 @@ function stopStream(id, element) {
     .catch(function (error) {
       removeSpinners();
       hideAndResetModal("stopStreamsModal");
+
+      addError(error);
+      console.log("Request failed: ", error);
+    });
+}
+
+function editStreamModal(id, element) {
+  //Get Bootstrap modal so we can manipulate it later
+
+  startSpinner(element, true);
+
+  let url = `/modal/editStreams/${id}`;
+  const response = partialRequest(url, {
+    method: "GET",
+    cache: "no-cache",
+    referrerPolicy: "no-referrer",
+  })
+    .then(function (data) {
+      removeSpinners(element);
+      let modalElement = document.getElementById("editStreamsModal");
+      modalElement.innerHTML = data;
+      let modal = new bootstrap.Modal(modalElement);
+      modal.show();
+      //TODO: dispose of old modals after they are closed
+    })
+    .catch(function (error) {
+      removeSpinners();
+      /* hideAndResetModal("stopStreamsModal"); */
 
       addError(error);
       console.log("Request failed: ", error);
