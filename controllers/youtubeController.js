@@ -5,6 +5,8 @@ const youtube = google.youtube({
   version: "v3",
   auth: googleAuth,
 });
+const part = "snippet,contentDetails, status";
+const Stream = require("../models/Stream");
 
 module.exports = {
   async getGoogleAuthToken(code) {
@@ -20,31 +22,29 @@ module.exports = {
 
   async getStreams(status = streamStatus.UPCOMING, limit = 10) {
     const livestreams = await youtube.liveBroadcasts.list({
-      part: "snippet,contentDetails",
+      part,
       broadcastStatus: status,
       maxResults: limit,
     });
     /* console.log(livestreams.data.items[0]); */
 
-    let formattedStreams = formatStreams(livestreams);
-    return formattedStreams;
+    return livestreams;
   },
 
   async getStreamById(streamId) {
     const livestreams = await youtube.liveBroadcasts.list({
       id: streamId,
-      part: "snippet,contentDetails",
+      part,
     });
 
-    let formattedStreams = formatStreams(livestreams);
-    return formattedStreams;
+    return livestreams;
   },
 
-  async stopStream(id) {
+  async stopStreamById(id) {
     let response = await youtube.liveBroadcasts.transition({
       broadcastStatus: "complete",
       id: id,
-      part: "snippet, status",
+      part,
     });
     console.log(
       "STOPPED STREAM ----------------- :",
@@ -53,21 +53,18 @@ module.exports = {
     );
     return response;
   },
-};
 
-//Private methods -----
-function formatStreams(livestreams) {
-  return livestreams.data.items.map((o) => ({
-    id: o.id,
-    title: o.snippet.title,
-    description: o.snippet.description,
-    startTime: o.snippet.scheduledStartTime,
-    thumbnail: o.snippet.thumbnails.standard,
-    videoLink: "https://www.youtube.com/watch?v=" + o.id,
-    //This link with "livestreaming" on the end redirects to the YT studio with broken homepage
-    studioLink:
-      "https://studio.youtube.com/video/" + o.id /* +'/livestreaming' */,
-    enableAutoStart: o.contentDetails.enableAutoStart,
-    enableAutoStop: o.contentDetails.enableAutoStop,
-  }));
-}
+  async editStream(streamData) {
+    let response = await youtube.liveBroadcasts.update({
+      part,
+      // Request body metadata
+      requestBody: streamData,
+    });
+    console.log(
+      "UPDATED STREAM ----------------- :",
+      response.data.id,
+      response.data.snippet?.title
+    );
+    return response;
+  },
+};

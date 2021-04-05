@@ -3,7 +3,7 @@ const router = require("express").Router();
 const { authCheck, isLoggedIn } = require("../middleware/authCheck");
 const youtube = require("../controllers/youtubeController");
 const { streamStatus } = require("../models/constants");
-const parallelAsync = require("../utils/main");
+const { parallelAsync, formatStreams } = require("../utils/main");
 
 /* Routing */
 // Auth -------------
@@ -56,9 +56,9 @@ router.get("/streams", authCheck, isLoggedIn, async (req, res) => {
     res.render("streams", {
       model: {
         streams: {
-          active,
-          upcoming,
-          last,
+          active: formatStreams(active),
+          upcoming: formatStreams(upcoming),
+          last: formatStreams(last),
         },
         path: {
           streams: "streams",

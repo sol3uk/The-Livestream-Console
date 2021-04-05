@@ -10,6 +10,8 @@ const helpers = require("./helpers/helpers");
 const app = express();
 app.use(express.static("public"));
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.engine(
   "handlebars",

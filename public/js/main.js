@@ -1,3 +1,4 @@
+//#region FETCH METHODS
 // Generic JSON parsing & network error catching fetch, from https://github.com/github/fetch/issues/203#issuecomment-266034180
 /**
  * Parses the JSON returned by a network request
@@ -74,11 +75,39 @@ function partialRequest(url, options) {
       );
   });
 }
+//#endregion
 
-// ----------------------
+//#region Utilities ----------------------
 
-/// Utilities ----------------------
-function startSpinner(element, disable = false) {
+/**
+ * @example
+ * //Get Form
+ * let form = document.querySelector('#post');
+ * //Get all field data from the form
+ * let data = new FormData(form);
+ * //Convert to an object
+ * let formObj = serializeFormData(data);
+ *
+ * @param  {object} data The FormData you need serializing
+ *
+ * @return {object} The parsed JSON, status from the FormData
+ */
+function serializeFormData(data) {
+  let obj = {};
+  for (let [key, value] of data) {
+    if (obj[key] !== undefined) {
+      if (!Array.isArray(obj[key])) {
+        obj[key] = [obj[key]];
+      }
+      obj[key].push(value);
+    } else {
+      obj[key] = value;
+    }
+  }
+  return obj;
+}
+
+function startSpinnerAndDisable(element, disable = false) {
   let spinnerEle = `<span class="isLoading spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
   //Want to, but can't use optional chaining as it's not fully cross browser capable yet
@@ -87,6 +116,10 @@ function startSpinner(element, disable = false) {
     //do button spinner
     element.disabled = disable;
     element.innerHTML = spinnerEle + element.innerHTML;
+  } else if (element instanceof HTMLFormElement) {
+    console.log("it's a form!");
+    disableFormElements(element);
+    //TO DO: check if element is form and set spinner on form element
   } else {
     //TO DO: do site wide spinner
   }
@@ -124,13 +157,35 @@ function addError(error, link, noDismiss) {
 
   document.getElementById("errorContainer").innerHTML = errorElement;
 }
-/// ----------------------
+
+// $0.innerHTML = HTML; // does *NOT* run <script> tags in HTML
+// setInnerHTML($0, HTML); // does run <script> tags in HTML
+// From https://stackoverflow.com/a/47614491
+function setInnerHTML(elm, html) {
+  elm.innerHTML = html;
+  Array.from(elm.querySelectorAll("script")).forEach((oldScript) => {
+    const newScript = document.createElement("script");
+    Array.from(oldScript.attributes).forEach((attr) =>
+      newScript.setAttribute(attr.name, attr.value)
+    );
+    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+    oldScript.parentNode.replaceChild(newScript, oldScript);
+  });
+}
+
+function disableFormElements(form) {
+  var allElements = form.elements;
+  for (var i = 0, l = allElements.length; i < l; ++i) {
+    // allElements[i].readOnly = true;
+    allElements[i].disabled = true;
+  }
+}
+
+//#endregion
 
 /// Actions ----------------------
 function stopStream(id, element) {
-  //Get Bootstrap modal so we can manipulate it later
-
-  startSpinner(element, true);
+  startSpinnerAndDisable(element, true);
 
   let url = `/api/streams/stop/${id}`;
   const response = request(url, {
@@ -140,6 +195,7 @@ function stopStream(id, element) {
       "Content-Type": "application/json",
     },
     referrerPolicy: "no-referrer",
+    body: JSON.stringify(data),
   })
     .then(function (data) {
       window.location.href = data.redirectUrl; //redirect after successful stop
@@ -156,7 +212,7 @@ function stopStream(id, element) {
 function editStreamModal(id, element) {
   //Get Bootstrap modal so we can manipulate it later
 
-  startSpinner(element, true);
+  startSpinnerAndDisable(element, true);
 
   let url = `/modal/editStreams/${id}`;
   const response = partialRequest(url, {
@@ -167,7 +223,7 @@ function editStreamModal(id, element) {
     .then(function (data) {
       removeSpinners(element);
       let modalElement = document.getElementById("editStreamsModal");
-      modalElement.innerHTML = data;
+      setInnerHTML(modalElement, data);
       let modal = new bootstrap.Modal(modalElement);
       modal.show();
       //TODO: dispose of old modals after they are closed
@@ -175,6 +231,40 @@ function editStreamModal(id, element) {
     .catch(function (error) {
       removeSpinners();
       /* hideAndResetModal("stopStreamsModal"); */
+
+      addError(error);
+      console.log("Request failed: ", error);
+    });
+}
+
+function editStream(e) {
+  e.preventDefault();
+  let formData = new FormData(e.target);
+  let formObj = serializeFormData(formData);
+  if (formObj.autoStart) {
+    formObj.autoStart = formObj.autoStart === "on" ? true : false;
+  }
+  if (formObj.autoStop) {
+    formObj.autoStop = formObj.autoStop === "on" ? true : false;
+  }
+  startSpinnerAndDisable(e.target, true);
+
+  let url = `/api/streams/edit/${formObj.id}`;
+  const response = request(url, {
+    method: "POST",
+    cache: "no-cache",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    referrerPolicy: "no-referrer",
+    body: JSON.stringify(formObj),
+  })
+    .then(function (data) {
+      window.location.href = data.redirectUrl; //redirect after successful stop
+    })
+    .catch(function (error) {
+      removeSpinners();
+      hideAndResetModal("stopStreamsModal");
 
       addError(error);
       console.log("Request failed: ", error);
