@@ -19,22 +19,38 @@
                     <label for="startTime" class="form-label">Scheduled For</label>
                     <input type="text" name="startTime" id="startTime" class="form-control" value="{{toLocalDatetime model.stream.startTime}}" disabled>
                 </div>
+                {{#if model.stream.isComplete}}
+                <div class="mb-3">
+                    <label for="actualStartTime" class="form-label">Actual Start</label>
+                    <input type="text" name="actualStartTime" id="actualStartTime" class="form-control" value="{{toLocalDatetime model.stream.actualStartTime}}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="actualEndTime" class="form-label">Actual End</label>
+                    <input type="text" name="actualEndTime" id="actualEndTime" class="form-control" value="{{toLocalDatetime model.stream.actualEndTime}}" disabled>
+                </div>
+                {{/if}}
+                {{#unless model.stream.isComplete}}
                 <div class="mb-3">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
+                            {{#unless model.stream.isLive}}
                             <div class="form-check form-switch">
-                                <input name="autoStart" class="form-check-input" type="checkbox" id="autoStart"
+                                <input id="editAutoStartHidden" type="hidden" name="autoStart" value="{{model.stream.enableAutoStart}}">
+                                <input class="form-check-input" type="checkbox" id="editAutoStart"
                                     {{#if model.stream.enableAutoStart}}checked{{/if}}>
                                 <label class="form-check-label" for="autoStart">auto-start</label>
                             </div>
+                            {{/unless}}
                             <div class="form-check form-switch">
-                                <input name="autoStop" class="form-check-input" type="checkbox" id="autoStop"
+                                <input id="editAutoStopHidden" type="hidden" name="autoStop" value="{{model.stream.enableAutoStop}}">
+                                <input class="form-check-input" type="checkbox" id="editAutoStop"
                                     {{#if model.stream.enableAutoStop}}checked{{/if}}>
                                 <label class="form-check-label" for="autoStop">auto-stop</label>
                             </div>
                         </li>
                     </ul>
                 </div>
+                {{/unless}}
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
@@ -43,9 +59,20 @@
         </div>
     </div>
 </div>
+{{#unless model.stream.isComplete}}
 <script>
+    //I hate this, checkboxes are painful, need to find a smaller, neater way without moving to jQuery
+    {{#unless model.stream.isLive}}
+    document.getElementById('editAutoStart').addEventListener('change', function(e){
+        document.getElementById('editAutoStartHidden').value = e.currentTarget.checked
+    });
+    {{/unless}}
+    document.getElementById('editAutoStop').addEventListener('change', function(e){
+        document.getElementById('editAutoStopHidden').value = e.currentTarget.checked
+    });
+</script>
+{{/unless}}
+{{!-- <script>
     var model = {{ json model }};
     console.log('EditPartialModel:', model);
-
-    
-</script>
+</script> --}}

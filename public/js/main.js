@@ -95,6 +95,7 @@ function partialRequest(url, options) {
 function serializeFormData(data) {
   let obj = {};
   for (let [key, value] of data) {
+    console.log(key, value);
     if (obj[key] !== undefined) {
       if (!Array.isArray(obj[key])) {
         obj[key] = [obj[key]];
@@ -117,7 +118,6 @@ function startSpinnerAndDisable(element, disable = false) {
     element.disabled = disable;
     element.innerHTML = spinnerEle + element.innerHTML;
   } else if (element instanceof HTMLFormElement) {
-    console.log("it's a form!");
     disableFormElements(element);
     //TO DO: check if element is form and set spinner on form element
   } else {
@@ -195,7 +195,6 @@ function stopStream(id, element) {
       "Content-Type": "application/json",
     },
     referrerPolicy: "no-referrer",
-    body: JSON.stringify(data),
   })
     .then(function (data) {
       window.location.href = data.redirectUrl; //redirect after successful stop
@@ -241,12 +240,7 @@ function editStream(e) {
   e.preventDefault();
   let formData = new FormData(e.target);
   let formObj = serializeFormData(formData);
-  if (formObj.autoStart) {
-    formObj.autoStart = formObj.autoStart === "on" ? true : false;
-  }
-  if (formObj.autoStop) {
-    formObj.autoStop = formObj.autoStop === "on" ? true : false;
-  }
+
   startSpinnerAndDisable(e.target, true);
 
   let url = `/api/streams/edit/${formObj.id}`;

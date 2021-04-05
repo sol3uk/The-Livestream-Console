@@ -12,8 +12,10 @@ class Stream {
       }),
       (this.contentDetails = {
         //What I want to change
-        enableAutoStart: request.autoStart || false,
-        enableAutoStop: request.autoStop || false,
+        enableAutoStart:
+          request.autoStart || ytStream.contentDetails.enableAutoStart,
+        enableAutoStop:
+          request.autoStop || ytStream.contentDetails.enableAutoStop,
         //Stuff we need to include by default
         enableClosedCaptions: ytStream.contentDetails.enableClosedCaptions,
         enableContentEncryption:

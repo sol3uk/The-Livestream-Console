@@ -19,9 +19,16 @@ function formatStreams(livestreams) {
     title: o.snippet.title,
     description: o.snippet.description,
     startTime: o.snippet.scheduledStartTime,
+    actualStartTime: o.snippet.actualStartTime,
+    actualEndTime: o.snippet.actualEndTime,
     thumbnail: o.snippet.thumbnails.standard,
     enableAutoStart: o.contentDetails.enableAutoStart,
     enableAutoStop: o.contentDetails.enableAutoStop,
+
+    status: o.status.lifeCycleStatus,
+    isLive: o.status.lifeCycleStatus === "live",
+    isComplete: o.status.lifeCycleStatus === "complete",
+    privacyStatus: o.status.privacyStatus,
 
     videoLink: "https://www.youtube.com/watch?v=" + o.id,
     //This link with "livestreaming" on the end redirects to the YT studio with broken homepage
