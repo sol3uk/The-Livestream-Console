@@ -1,6 +1,7 @@
 const express = require("express");
 const apiRoutes = require("./routes/apiRoutes");
 const pageRoutes = require("./routes/pageRoutes");
+const partialRoutes = require("./routes/partialRoutes");
 const { config } = require("./config");
 const cookieParser = require("cookie-parser");
 const hbs = require("express-handlebars");
@@ -9,6 +10,8 @@ const helpers = require("./helpers/helpers");
 const app = express();
 app.use(express.static("public"));
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.engine(
   "handlebars",
@@ -22,7 +25,8 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
-app.use("/", apiRoutes);
+app.use("/api", apiRoutes);
+app.use("/modal", partialRoutes);
 app.use("/", pageRoutes);
 
 app.listen(config.port || 8080);
