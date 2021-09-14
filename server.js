@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const hbs = require("express-handlebars");
 const helpers = require("./helpers/helpers");
 
+const PORT = config.port || 8080;
 const app = express();
 app.use(express.static("public"));
 app.use(cookieParser());
@@ -29,5 +30,5 @@ app.use("/api", apiRoutes);
 app.use("/modal", partialRoutes);
 app.use("/", pageRoutes);
 
-app.listen(config.port || 8080);
-console.log("Listening on port", config.port || 8080);
+app.listen(PORT);
+console.log(`Listening on http://localhost:${PORT}`);
