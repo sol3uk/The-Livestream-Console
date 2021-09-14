@@ -20,11 +20,18 @@
             </ul>
             <p class="card-text">{{this.description}}</p>
             <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
+                <div class="btn-group dropend">
                     <a class="btn btn-sm btn-outline-secondary" target="_blank" href="{{ this.videoLink }}"
                         role="button">View</a>
                     <button class="btn btn-sm btn-outline-secondary" onClick="editStreamModal('{{id}}',this)"
-                        role="button">Edit</button>
+                        role="button">Edit
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="material-icons">more_horiz</i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item d-flex justify-content-between" onClick="deleteStreamModal('{{id}}',this)">Delete<i class="material-icons">delete_outline</i></button></li>
+                    </ul>
                 </div>
             </div>
         </div>

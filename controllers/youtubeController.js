@@ -20,6 +20,23 @@ module.exports = {
     });
   },
 
+  //#region CREATE
+  async createStream(streamData) {
+    let response = await youtube.liveBroadcasts.insert({
+      part,
+      // Request body metadata
+      requestBody: streamData,
+    });
+    console.log(
+      "ADDED STREAM ----------------- :",
+      response.data.id,
+      response.data.snippet?.title
+    );
+    return response;
+  },
+  //#endregion
+
+  //#region READ
   async getStreams(status = streamStatus.UPCOMING, limit = 10) {
     const livestreams = await youtube.liveBroadcasts.list({
       part,
@@ -39,18 +56,16 @@ module.exports = {
 
     return livestreams;
   },
+  //#endregion
 
+  //#region UPDATE
   async stopStreamById(id) {
     let response = await youtube.liveBroadcasts.transition({
       broadcastStatus: "complete",
       id: id,
       part,
     });
-    console.log(
-      "STOPPED STREAM ----------------- :",
-      response.data.id,
-      response.data.snippet?.title
-    );
+    console.log("STOPPED STREAM ----------------- :", response);
     return response;
   },
 
@@ -67,4 +82,15 @@ module.exports = {
     );
     return response;
   },
+  //#endregion
+
+  //#region DELETE
+  async deleteStream(streamId) {
+    let response = await youtube.liveBroadcasts.delete({
+      id: streamId,
+    });
+    console.log("DELETED STREAM ----------------- :", streamId);
+    return response;
+  },
+  //#endregion
 };

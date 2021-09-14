@@ -1,0 +1,16 @@
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Delete Livestream?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p>This will completely <b>DELETE</b> the livestream:</br>
+                <i>{{model.stream.title}}</i></br></p>
+            <button type="button" class="btn btn-danger" onClick="deleteStream('{{model.stream.id}}',this)">Yes, I'm sure, DELETE</button>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+</div>
