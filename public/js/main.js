@@ -213,7 +213,7 @@ function editStreamModal(id, element) {
 
   startSpinnerAndDisable(element, true);
 
-  let url = `/modal/editStreams/${id}`;
+  let url = `/modal/editStream/${id}`;
   const response = partialRequest(url, {
     method: "GET",
     cache: "no-cache",
@@ -221,7 +221,7 @@ function editStreamModal(id, element) {
   })
     .then(function (data) {
       removeSpinners(element);
-      let modalElement = document.getElementById("editStreamsModal");
+      let modalElement = document.getElementById("actionModal");
       setInnerHTML(modalElement, data);
       let modal = new bootstrap.Modal(modalElement);
       modal.show();
@@ -258,7 +258,58 @@ function editStream(e) {
     })
     .catch(function (error) {
       removeSpinners();
-      hideAndResetModal("stopStreamsModal");
+      hideAndResetModal("actionModal");
+
+      addError(error);
+      console.log("Request failed: ", error);
+    });
+}
+
+function deleteStreamModal(id, element) {
+  //Get Bootstrap modal so we can manipulate it later
+
+  startSpinnerAndDisable(element, true);
+
+  let url = `/modal/deleteStream/${id}`;
+  const response = partialRequest(url, {
+    method: "GET",
+    cache: "no-cache",
+    referrerPolicy: "no-referrer",
+  })
+    .then(function (data) {
+      removeSpinners(element);
+      let modalElement = document.getElementById("actionModal");
+      setInnerHTML(modalElement, data);
+      let modal = new bootstrap.Modal(modalElement);
+      modal.show();
+      //TODO: dispose of old modals after they are closed
+    })
+    .catch(function (error) {
+      removeSpinners();
+
+      addError(error);
+      console.log("Request failed: ", error);
+    });
+}
+
+function deleteStream(id, e) {
+  startSpinnerAndDisable(e.target, true);
+
+  let url = `/api/streams/delete/${id}`;
+  const response = request(url, {
+    method: "DELETE",
+    cache: "no-cache",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    referrerPolicy: "no-referrer",
+  })
+    .then(function (data) {
+      window.location.href = data.redirectUrl; //redirect after successful stop
+    })
+    .catch(function (error) {
+      removeSpinners();
+      hideAndResetModal("actionModal");
 
       addError(error);
       console.log("Request failed: ", error);
