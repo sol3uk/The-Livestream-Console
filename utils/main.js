@@ -30,7 +30,8 @@ function formatStreams(livestreams) {
     isComplete: o.status.lifeCycleStatus === "complete",
     privacyStatus: o.status.privacyStatus,
 
-    videoLink: "https://www.youtube.com/watch?v=" + o.id,
+    videoLink: `https://www.youtube.com/watch?v=${o.id}`,
+    controlRoomLink: `https://studio.youtube.com/video/${o.id}/livestreaming`,
     //This link with "livestreaming" on the end redirects to the YT studio with broken homepage
     studioLink:
       "https://studio.youtube.com/video/" + o.id /* +'/livestreaming' */,
