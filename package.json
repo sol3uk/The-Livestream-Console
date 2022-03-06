@@ -1,6 +1,9 @@
 {
   "name": "the-livestream-console",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.x"
+  },
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -23,7 +26,7 @@
     "material-design-icons": "^3.0.1"
   },
   "devDependencies": {
-    "node-sass": "^5.0.0",
+    "node-sass": "^6.0.1",
     "nodemon": "^2.0.7"
   }
 }

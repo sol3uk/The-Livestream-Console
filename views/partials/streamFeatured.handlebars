@@ -31,7 +31,7 @@
                                             </li>
                                         </ul>
                                         <p class="card-text">
-                                            <small class="text-muted"><b>Live Since:</b> {{toLocalDatetime this.startTime}}</small><br/>
+                                            <small class="text-muted"><b>Live Since:</b> {{toLocalDatetime this.actualStartTime}}</small><br/>
                                             <small class="text-muted"><b>Id:</b> {{this.id}}</small>
                                         </p>
                                         <div class="d-flex justify-content-between align-items-center">
@@ -67,7 +67,11 @@
                                         <div class="card-body">
                                             <h2 class="card-title">{{this.title}}</h2>
                                             <p class="card-text">{{this.description}}</p>
-                                            <p class="card-text"><small class="text-muted">Start date {{toLocalDatetime this.startTime}}</small></p>
+                                            <p class="card-text">
+                                                <small class="text-muted"><b>Start Date:</b> {{toLocalDatetime this.actualStartTime}}</small><br/>
+                                                <small class="text-muted"><b>End Date:</b> {{toLocalDatetime this.actualEndTime}}</small><br/>
+                                                <small class="text-muted"><b>Id:</b> {{this.id}}</small>
+                                            </p>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="btn-group">
                                                     <a class="btn btn-outline-secondary" target="_blank" href="{{ this.videoLink }}" role="button">View</a>
