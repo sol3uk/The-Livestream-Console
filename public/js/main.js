@@ -203,7 +203,8 @@ function stopStream(id, element) {
       removeSpinners();
       hideAndResetModal("stopStreamsModal");
 
-      addError(error);
+      var message = error.errors[0]?.message;
+      addError(message);
       console.log("Request failed: ", error);
     });
 }
@@ -230,8 +231,8 @@ function editStreamModal(id, element) {
     .catch(function (error) {
       removeSpinners();
       /* hideAndResetModal("stopStreamsModal"); */
-
-      addError(error);
+      var message = error.errors[0]?.message;
+      addError(message);
       console.log("Request failed: ", error);
     });
 }
@@ -260,7 +261,8 @@ function editStream(e) {
       removeSpinners();
       hideAndResetModal("actionModal");
 
-      addError(error);
+      var message = error.errors[0]?.message;
+      addError(message);
       console.log("Request failed: ", error);
     });
 }
@@ -287,7 +289,8 @@ function deleteStreamModal(id, element) {
     .catch(function (error) {
       removeSpinners();
 
-      addError(error);
+      var message = error.errors[0]?.message;
+      addError(message);
       console.log("Request failed: ", error);
     });
 }
@@ -311,7 +314,8 @@ function deleteStream(id, e) {
       removeSpinners();
       hideAndResetModal("actionModal");
 
-      addError(error);
+      var message = error.errors[0]?.message;
+      addError(message);
       console.log("Request failed: ", error);
     });
 }
