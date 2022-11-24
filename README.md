@@ -17,9 +17,9 @@ You're good to go!
 
 ## Usage
 
-Live Branch: https://the-livestream-console.herokuapp.com/
+Live Branch: https://the-livestream-console.onrender.com/
 
-Development Branch: https://the-livestream-console-dev.herokuapp.com/
+Development Branch: https://the-livestream-console-dev.onrender.com/
 
 ## Contributing & Plans
 
