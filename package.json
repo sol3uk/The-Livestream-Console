@@ -25,10 +25,10 @@
     "googleapis": "^67.1.0",
     "material-design-icons": "^3.0.1",
     "node": "^19.1.0",
-    "sass": "^1.56.1",
     "server.js": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "sass": "^1.56.1"
   }
 }
