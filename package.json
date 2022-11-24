@@ -7,8 +7,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "sass-compile": "node-sass scss/main.scss public/css/main.css --output-style compressed",
-    "sass-watch": "node-sass -w scss/main.scss public/css/main.css",
+    "sass-compile": "sass scss/main.scss public/css/main.css -q",
+    "sass-watch": "sass -w scss/main.scss public/css/main.css",
     "build": "npm i & npm run sass-compile",
     "dev": "npm run sass-compile && node server.js && npm run sass-watch",
     "start": "node server.js"
@@ -25,10 +25,10 @@
     "googleapis": "^67.1.0",
     "material-design-icons": "^3.0.1",
     "node": "^19.1.0",
+    "sass": "^1.56.1",
     "server.js": "^1.0.0"
   },
   "devDependencies": {
-    "node-sass": "^6.0.1",
     "nodemon": "^2.0.7"
   }
 }
