@@ -7,9 +7,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "sass-compile": "sass scss/main.scss public/css/main.css -q",
+    "sass-compile": "sass scss/main.scss public/css/main.css",
     "sass-watch": "sass -w scss/main.scss public/css/main.css",
-    "build": "npm i & npm run sass-compile",
+    "build": "npm i && npm run sass-compile",
     "dev": "npm run sass-compile && node server.js && npm run sass-watch",
     "start": "node server.js"
   },
